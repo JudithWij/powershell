@@ -1,10 +1,11 @@
 #guess the number
 
-#add speach
+#add speach set the game 
 Add-Type -AssemblyName System.speech
 $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer
 $play = 1
 $speak.speak('I have a number between 1-10, can you guess it in 3 tries?')
+$guessedalready = @()
 
 #get a number and ask for a number
 while ($play -eq 1) 
@@ -14,19 +15,26 @@ while ($play -eq 1)
 
     #check the number 3 tries
     while ($inhead -ne $num -and $tries -gt 0) 
-    {
+    {   $guessedalready = $guessedalready + $num
+
         if ($num -gt $inhead)
         {
             'Sorry, your guess: ' + $num + ' was to high!'
-            $tries = $tries-1
-            [int]$num = Read-Host 'guess a number from 1-10 (10 is not included)'
         }
         else
         {
             'Sorry, your guess: ' + $num + ' was to low!'
-            $tries = $tries-1
-            [int]$num = Read-Host 'guess a number from 1-10 (10 is not included)'
         }
+
+        [int]$num = Read-Host 'guess a number from 1-10 (10 is not included)'
+
+        while($guessedalready -contains $num)
+            {
+                [int]$num = Read-Host 'You already guessed this number try again!'
+            }
+
+        $guessedalready = $guessedalready + $num
+        $tries = $tries - 1
     
     }
 
@@ -56,6 +64,7 @@ while ($play -eq 1)
 
         if($playagain -eq 1){
             $tries = 2
+            $guessedalready = @()
             $play = 1
         }
         else {

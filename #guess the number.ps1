@@ -11,12 +11,15 @@ $guessedalready = @()
 while ($play -eq 1) 
 {   $inhead = Get-Random -Minimum 1 -Maximum 10
     [int]$num = Read-Host 'guess a number from 1-10 (10 is not included)'
-    $tries = 2
+    $tries = 3
 
     #check the number 3 tries
     while ($inhead -ne $num -and $tries -gt 0) 
-    {   $guessedalready = $guessedalready + $num
+    {   # add guessed to array 
+        $guessedalready = $guessedalready + $num
+        $tries = $tries - 1
 
+        #check if the number is to high or to low
         if ($num -gt $inhead)
         {
             'Sorry, your guess: ' + $num + ' was to high!'
@@ -26,13 +29,16 @@ while ($play -eq 1)
             'Sorry, your guess: ' + $num + ' was to low!'
         }
 
+        #ask for a new number
         [int]$num = Read-Host 'guess a number from 1-10 (10 is not included)'
 
+        #if number is already guessed ask for a new number 
         while($guessedalready -contains $num)
             {
                 [int]$num = Read-Host 'You already guessed this number try again!'
             }
-
+        
+        # add geusses to array substract tries
         $guessedalready = $guessedalready + $num
         $tries = $tries - 1
     
